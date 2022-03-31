@@ -1,0 +1,56 @@
+{
+  "proposal_downloader": {
+    "run": false,
+    "username": "",
+    "api_key": "",
+    "fields": [
+      "Primary Subject Area",
+      "Total Projected Costs",
+      "Priority Populations",
+      "Future Work #1 Location",
+      "Annual Operating Budget",
+      "Number of Employees",
+      "Organization Name", 
+      "Organization Location" ,
+      
+      "Executive Summary",
+      "Solution Overview",
+      "Challenge Statement",
+      "Theory of Change"
+    ],
+    "exclude_competitions": ["LFC100Change2017"]
+  },
+  "cleaner": {
+    "run": true,
+    "document_col": ["Executive Summary"]
+  },
+  "preprocessor": {
+    "run": true,
+    "ngram_range_min": 1, 
+    "ngram_range_max": 4,
+    "min_df": 0, 
+    "max_df": 0.8,
+    "max_features": null,
+    "binary": false
+  },
+  "apply_umap": {
+    "run": true,
+    "metric": "cosine",
+    "components": 3,
+    "n_neighbors": 25,
+    "threshold": 0.15,
+    "min_dist": 0,
+    "densmap": false
+  },
+  "topic_model": {
+    "run": true,
+    "min_cluster_size": 15,
+    "cluster_selection_epsilon": 0.0,
+    "alpha": 1.0
+  },
+  "s3_uploader": {
+    "run": false,
+    "bucket": "lfc-landscape",
+    "acl": "private"
+  }
+}

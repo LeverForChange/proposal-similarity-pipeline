@@ -24,6 +24,8 @@ def run(**kwargs):
   t0 = time.time()
   nn = KDTree(mapper.embedding_)
   knn_indices = list(map(lambda x: x.tolist(), nn.query_radius(mapper.embedding_, r=kwargs['threshold'])))
+  knn_indices = list(map(lambda elem: [x for x in elem[1] if x != elem[0]], enumerate(knn_indices)))
+  
   print('Nearest Neighbors run in', f'{round(time.time() - t0, 2)}s')
 
   pickle.dump(mapper, open(path + 'umap.pkl', 'wb'))

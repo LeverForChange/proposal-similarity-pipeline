@@ -25,7 +25,7 @@
     "document_col": ["Executive Summary"]
   },
   "preprocessor": {
-    "run": true,
+    "run": false,
     "ngram_range_min": 1, 
     "ngram_range_max": 4,
     "min_df": 0, 
@@ -34,7 +34,7 @@
     "binary": false
   },
   "apply_umap": {
-    "run": true,
+    "run": false,
     "metric": "cosine",
     "components": 3,
     "n_neighbors": 25,
@@ -43,7 +43,7 @@
     "densmap": false
   },
   "topic_model": {
-    "run": true,
+    "run": false,
     "min_cluster_size": 15,
     "cluster_selection_epsilon": 0.0,
     "alpha": 1.0

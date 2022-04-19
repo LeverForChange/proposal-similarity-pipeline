@@ -37,7 +37,15 @@ def run(**kwargs):
       return val
     except:
       return ''
+  def extract_location(x, level):
+    try:
+      x = json.loads(x)
+      return x.get(level)
+    except:
+      return None
 
+  df['Country'] = df['Future Work #1 Location'].apply(lambda x: extract_location(x, 'Country'))
+  df['State'] = df['Future Work #1 Location'].apply(lambda x: extract_location(x, 'State/Province'))
   if 'Future Work #1 Location' in df.columns:
     df['Future Work #1 Location'] = df['Future Work #1 Location'].apply(lambda x: clean_location(x))
   if 'Organization Location' in df.columns:

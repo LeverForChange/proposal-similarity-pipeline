@@ -69,65 +69,6 @@ The `s3_uploader.py` module puts every file found in `data/` into an S3 bucket. 
 1. `bucket` the name of the bucket housing your model data
 2. `acl` the default ACL for each file uploaded, recommend `private` so that objects can only be accesse with access keys
 
-## Sample args.json
-
-Below are recommended defaults for the pipeline arguments.
-
-```
-{
-  "proposal_downloader": {
-    "run": true,
-    "username": "YOUR TORQUE API USERNAME",
-    "api_key": "YOUR TORQUE API KEY",
-    "fields": [
-      "Executive Summary",
-      "Primary Subject Area",
-      "Total Projected Costs",
-      "Priority Populations",
-      "Future Work #1 Location",
-      "Annual Operating Budget",
-      "Number of Employees",
-      "Organization Name", 
-      "Organization Location"
-    ],
-    "exclude_competitions": ["LFC100Change2017"]
-  },
-  "cleaner": {
-    "run": true,
-    "document_col": "Executive Summary"
-  },
-  "preprocessor": {
-    "run": true,
-    "ngram_range_min": 1, 
-    "ngram_range_max": 4,
-    "min_df": 0, 
-    "max_df": 0.8,
-    "max_features": null,
-    "binary": false
-  },
-  "apply_umap": {
-    "run": true,
-    "metric": "cosine",
-    "components": 3,
-    "n_neighbors": 25,
-    "threshold": 0.15,
-    "min_dist": 0,
-    "densmap": false
-  },
-  "topic_model": {
-    "run": true,
-    "min_cluster_size": 20,
-    "cluster_selection_epsilon": 0.0,
-    "alpha": 1.0
-  },
-  "s3_uploader": {
-    "run": false,
-    "bucket": "YOUR-BUCKET",
-    "acl": "private"
-  }
-}
-```
-
 ## Data Specifications
 
 ### Proposal Dataframe

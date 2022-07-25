@@ -6,22 +6,29 @@ For use with non-LfC data, turn off the proposal downloading step and implement 
 
 ## General Instructions
 
-1. `pip install -r requirements.txt`
+1. `pip install -r requirements.txt` In case prblems arise, consult: https://stackoverflow.com/questions/64261546/how-to-solve-error-microsoft-visual-c-14-0-or-greater-is-required-when-inst
 2. `args.json` contains keyword arguments for each step in the pipeline. Stages can be added or dropped by setting the `run` boolean for each stage. For example, if a cleaned and preprocessed dataset already exists, you may want to set all  `run` flags to `false` except for `apply_umap` and `topic_model`.
 3. `python pipeline.py` - output files will be placed under `data/`.
 4. To upload the output files to S3 - a requirement for the hosted webapp to run with updated data, don't forget to cycle the container - ensure the `s3_uploader` run flag is set to `true`. You'll need to run `aws configure` in your terminal first to set up the AWS environment locally. Ensure the `AWS_ACCESS_KEY` and `AWS_ACCESS_SECRET` are up to date in the container's environment variables.
 
-A small function to convert the KNN indices matrix to a CSV can be found in `utils.py`.
+A small function to convert the KNN indices matrix to a CSV can be found in `utils.py`. This is useful for recalculating similar proposals for ingestion into Global View.
 
 ## UMAP + Topic Model Pipeline Arguments
 
-### Proposal Downloader
+Required fields for downloaded Torque file:
 
-The `proposal_downloader.py` module downloads __all__ proposals from the Torque database.
+```
+"Primary Subject Area",
+"Total Projected Costs",
+"Priority Populations",
+"Future Work #1 Location",
+"Annual Operating Budget",
+"Number of Employees",
+"Organization Name", 
+"Organization Location",
 
-1. `username`, `api_key` put your Torque credentials here
-2. `fields` Ensure that at least your document field is listed here, the others are just for informational purposes in the app
-3. `exclude_competitions` Competitions to be excluded when downloading proposals
+"Executive Summary"
+```
 
 ### Cleaner
 

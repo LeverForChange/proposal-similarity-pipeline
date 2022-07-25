@@ -2,7 +2,6 @@ import asyncio
 import json
 import time
 
-import proposal_downloader
 import cleaner
 import preprocessor
 import apply_umap
@@ -11,12 +10,6 @@ import s3_uploader
 
 def run(**kwargs):
   t0 = time.time()
-
-  # Download proposal dataset
-  if kwargs['proposal_downloader']['run']:
-    print('Downloading proposals...')
-    proposal_downloader.run(**kwargs['proposal_downloader'])
-    print('\n')
     
   # Clean data
   if kwargs['cleaner']['run']:

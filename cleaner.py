@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import ast
 import html
 import re
 import time
@@ -30,24 +31,25 @@ def run(**kwargs):
   # Clean Work Location
   def clean_location(x):
     try:
-      x = json.loads(x)
+      x = ast.literal_eval(x)[0]
       val = x['Country'] + ' | ' + x['State/Province']
       if x.get('City'):
         val += ' | ' + x['City']
       return val
     except:
       return ''
+    
   def extract_location(x, level):
     try:
-      x = json.loads(x)
+      x = ast.literal_eval(x)[0]
       return x.get(level)
     except:
       return None
 
-  df['Country'] = df['Future Work #1 Location'].apply(lambda x: extract_location(x, 'Country'))
-  df['State'] = df['Future Work #1 Location'].apply(lambda x: extract_location(x, 'State/Province'))
-  if 'Future Work #1 Location' in df.columns:
-    df['Future Work #1 Location'] = df['Future Work #1 Location'].apply(lambda x: clean_location(x))
+  df['Country'] = df['Future Work Locations'].apply(lambda x: extract_location(x, 'Country'))
+  df['State'] = df['Future Work Locations'].apply(lambda x: extract_location(x, 'State/Province'))
+  if 'Future Work Locations' in df.columns:
+    df['Future Work Locations'] = df['Future Work Locations'].apply(lambda x: clean_location(x))
   if 'Organization Location' in df.columns:
     df['Organization Location'] = df['Organization Location'].apply(lambda x: clean_location(x))
 
@@ -143,6 +145,5 @@ def run(**kwargs):
   print('Remaining proposals after cleaning:', len(df))
 
 if __name__ == '__main__':
-  import json
   kwargs = json.load(open('args.json'))['cleaner']
   run(**kwargs)

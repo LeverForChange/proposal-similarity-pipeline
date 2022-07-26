@@ -11,7 +11,7 @@ For use with non-LfC data, turn off the proposal downloading step and implement 
 3. `python pipeline.py` - output files will be placed under `data/`.
 4. To upload the output files to S3 - a requirement for the hosted webapp to run with updated data, don't forget to cycle the container - ensure the `s3_uploader` run flag is set to `true`. You'll need to run `aws configure` in your terminal first to set up the AWS environment locally. Ensure the `AWS_ACCESS_KEY` and `AWS_ACCESS_SECRET` are up to date in the container's environment variables.
 
-A small function to convert the KNN indices matrix to a CSV can be found in `utils.py`. This is useful for recalculating similar proposals for ingestion into Global View.
+A small function to convert the KNN indices matrix to a CSV can be found in `knnToCsv.py`. This is useful for recalculating similar proposals for ingestion into Global View.
 
 ## UMAP + Topic Model Pipeline Arguments
 
@@ -21,7 +21,7 @@ Required fields for downloaded Torque file:
 "Primary Subject Area",
 "Total Projected Costs",
 "Priority Populations",
-"Future Work #1 Location",
+"Future Work Locations",
 "Annual Operating Budget",
 "Number of Employees",
 "Organization Name", 
@@ -54,7 +54,8 @@ The `apply-umap.py` module fits the preprocessed data to a UMAP model and produc
 3. `min_dist` the minimum distance between two points, below which UMAP will disregard in dimension reduction
 4. `densmap` turning this on leads to clumpier data
 5. `n_neighbors` the number of neighbors to consider during UMAP computation
-6. `threshold` the euclidean distance below which an external node is considered a neighbor or not, higher vaues result in more neighbors per point 
+6. `threshold` the euclidean distance below which an external node is considered a neighbor or not, higher vaues result in more neighbors per point
+7. `neighbor_approach` whether to find a mapping of neighbors for each proposal based on N nearest neighbors or any neighbor within a radius. Options are either `radius` or `knn`. If `radius` the `threshold` value will be used, if `knn` the `n_neighbors` value will be used. `radius` is recommended for building an embedding for the proposal landscape app, while `knn` is better suited for identifying similar proposals in Global View.
 
 Learn more in the [UMAP documentation](https://umap-learn.readthedocs.io/en/latest/parameters.html) and the [KNN documentation](https://umap-learn.readthedocs.io/en/latest/api.html#umap.umap_.nearest_neighbors)
 

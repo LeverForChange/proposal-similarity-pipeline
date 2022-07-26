@@ -68,7 +68,7 @@ def run(**kwargs):
   pickle.dump(topics, open(path + 'topics.pkl', 'wb'))
 
   # re-save the CSV with outlier info
-  df.to_csv(path + 'lfc-proposals-clean.csv')
+  df.to_csv(path + 'lfc-proposals-clean.csv', index=False)
 
 if __name__ == '__main__':
   import json

@@ -19,7 +19,8 @@
     "n_neighbors": 25,
     "threshold": 0.15,
     "min_dist": 0,
-    "densmap": false
+    "densmap": false,
+    "neighbor_approach": "radius"
   },
   "topic_model": {
     "run": true,

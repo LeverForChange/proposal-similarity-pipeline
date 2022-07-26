@@ -31,7 +31,9 @@ def run(**kwargs):
   # Clean Work Location
   def clean_location(x):
     try:
-      x = ast.literal_eval(x)[0]
+      x = ast.literal_eval(x)
+      if isinstance(x, list):
+        x = x[0]
       val = x['Country'] + ' | ' + x['State/Province']
       if x.get('City'):
         val += ' | ' + x['City']

@@ -1,6 +1,7 @@
 import boto3
 import os
 import time
+import json
 
 def run(**kwargs):
   s3 = boto3.client('s3')
@@ -19,6 +20,5 @@ def run(**kwargs):
       print('Uploaded:', key.split('/')[-1], 'in', f'{round(time.time() - t0, 2)}s')
 
 if __name__ == '__main__':
-  import json
   kwargs = json.load(open('args.json'))['s3_uploader']
   run(**kwargs)

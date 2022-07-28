@@ -2,7 +2,7 @@
 
 Customizable script to generate 3D embeddings, topic labels, and a neighbor matrix using Lever for Change proposal data.
 
-For use with non-LfC data, turn off the proposal downloading step and implement your own cleaning function.
+For use with non-LfC data, implement your own cleaning function.
 
 ## General Instructions
 
@@ -15,7 +15,7 @@ A small function to convert the KNN indices matrix to a CSV can be found in `knn
 
 ## UMAP + Topic Model Pipeline Arguments
 
-Required fields for downloaded Torque file:
+Required fields for downloaded Torque file, if using the pipeline to regenerate embeddings for the landscape app. For generic use, implement your own cleaning step, and adjust the `document_col` parameter.
 
 ```
 "Primary Subject Area",
@@ -29,6 +29,12 @@ Required fields for downloaded Torque file:
 
 "Executive Summary"
 ```
+
+### Global Parameters
+
+1. `input_file_name` Name of the input CSV file to run the pipeline on.
+2. `output_file_name` The name of the cleaned CSV file outputted in the cleaning step.
+3. `model_tag` A prefx that will be appended to each output file, useful for identifying across multiple pipeline runs.
 
 ### Cleaner
 
@@ -142,3 +148,15 @@ This is a dictionary of `cluster_label -> topic_information` mappings. The first
 ```
 
 The keys in the topics dictionary map to the `Topic` column in the Proposal Dataframe.
+
+## KNN to CSV utility function
+
+For convenience, a utility function is provided to map proposals to a list of neighboring proposals. The CSV generated has two columns, the first containing the ID of a target proposal, and the second a comma separated list of neighboring proposals (or blank if no neighbors exist).
+
+#### Arguments
+
+Example command: `python knnToCsv.py LFC_proposals-clean.csv LFC`
+
+Args:
+1. `filename` The name of the cleaned CSV generated in the cleaning step of the pipeline
+2. `modelTag` The model tag of the desired pipeline output - determines which knn_indicies matrix to select

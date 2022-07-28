@@ -12,7 +12,7 @@ def run(**kwargs):
 
   # Load data
   path = 'data/'
-  df = pd.read_csv(path + 'lfc-proposals.csv')
+  df = pd.read_csv(path + kwargs['input_file_name'])
   document_col = kwargs['document_col'] # Used for UMAP dimension reduction
   if not isinstance(document_col, list):
     document_col = [document_col]
@@ -142,10 +142,10 @@ def run(**kwargs):
 
   df.drop(columns=document_col, inplace=True)
 
-  df.to_csv(path + 'lfc-proposals-clean.csv', index=False)
+  df.to_csv(path + kwargs['model_tag'] + '_' + kwargs['output_file_name'], index=False)
   print('Cleaned data in', f'{round(time.time() - t0, 2)}s')
   print('Remaining proposals after cleaning:', len(df))
 
 if __name__ == '__main__':
-  kwargs = json.load(open('args.json'))['cleaner']
-  run(**kwargs)
+  kwargs = json.load(open('args.json'))
+  run(**kwargs['cleaner'] | kwargs['global'])

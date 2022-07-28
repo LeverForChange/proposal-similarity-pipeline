@@ -1,4 +1,9 @@
 {
+  "global": {
+    "input_file_name": "lfc-proposals.csv",
+    "output_file_name": "lfc-proposals-clean.csv",
+    "model_tag": "LFC"
+  },
   "cleaner": {
     "run": true,
     "document_col": ["Executive Summary"]

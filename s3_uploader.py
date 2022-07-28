@@ -6,7 +6,7 @@ import json
 def run(**kwargs):
   s3 = boto3.client('s3')
 
-  path = 'data/'
+  path = f'data/{kwargs["model_tag"]}_'
   for f in os.listdir(path):
     key = os.path.join(path, f)
     if os.path.isfile(key):
@@ -20,5 +20,5 @@ def run(**kwargs):
       print('Uploaded:', key.split('/')[-1], 'in', f'{round(time.time() - t0, 2)}s')
 
 if __name__ == '__main__':
-  kwargs = json.load(open('args.json'))['s3_uploader']
-  run(**kwargs)
+  kwargs = json.load(open('args.json'))
+  run(**kwargs['s3_uploader'] | kwargs['global'])

@@ -1,6 +1,7 @@
 import hdbscan
 import pickle
 import time
+import json
 
 import numpy as np
 import pandas as pd
@@ -8,9 +9,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 def run(**kwargs):
   t0 = time.time()
-  path = 'data/'
+  path = f'data/{kwargs["model_tag"]}_'
   embeddings = pickle.load(open(path + 'embeddings.pkl', 'rb'))
-  df = pd.read_csv(path + 'lfc-proposals-clean.csv')
+  df = pd.read_csv(path + kwargs['output_file_name'])
 
   # Apply HDBSCAN on the dimension reduced (UMAP) dataset to generate clusters
   clusters = hdbscan.HDBSCAN(
@@ -68,9 +69,8 @@ def run(**kwargs):
   pickle.dump(topics, open(path + 'topics.pkl', 'wb'))
 
   # re-save the CSV with outlier info
-  df.to_csv(path + 'lfc-proposals-clean.csv', index=False)
+  df.to_csv(path + kwargs['output_file_name'], index=False)
 
 if __name__ == '__main__':
-  import json
-  kwargs = json.load(open('args.json'))['topic_model']
-  run(**kwargs)
+  kwargs = json.load(open('args.json'))
+  run(**kwargs['topic_model'] | kwargs['global'])

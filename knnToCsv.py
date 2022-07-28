@@ -1,9 +1,10 @@
 import pandas as pd
 import pickle
+import sys
 
-def neighbors_to_csv():
-  path = 'data/'
-  df = pd.read_csv(path + 'lfc-proposals-clean.csv')
+def neighbors_to_csv(filename, modelTag):
+  path = f'data/{modelTag}_'
+  df = pd.read_csv('data/' + filename)
   knn = pickle.load(open(path + 'knn_indices.pkl', 'rb'))
   res = {'Proposal ID': [], 'Similar Proposal IDs': []}
 
@@ -15,7 +16,9 @@ def neighbors_to_csv():
       res['Similar Proposal IDs'].append('')
 
   res = pd.DataFrame(res)
-  res.to_csv('data/lfc-proposal-neighbors.csv', index=False)
+  res.to_csv(f'data/{modelTag}_neighbors.csv', index=False)
 
 if __name__ == '__main__':
-  neighbors_to_csv()
+  filename = sys.argv[1]
+  modelTag = sys.argv[2]
+  neighbors_to_csv(filename, modelTag)

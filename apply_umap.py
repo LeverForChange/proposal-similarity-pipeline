@@ -8,7 +8,7 @@ from sklearn.neighbors import KDTree
 
 def run(**kwargs):
   t0 = time.time()
-  path = 'data/'
+  path = f'data/{kwargs["model_tag"]}_'
   preprocess_df = pickle.load(open(path + 'preprocess_df.pkl', 'rb'))
 
   umap_mapper = umap.UMAP(
@@ -56,5 +56,5 @@ def run(**kwargs):
   pickle.dump(knn_indices, open(path + 'knn_indices.pkl', 'wb'))
 
 if __name__ == '__main__':
-  kwargs = json.load(open('args.json', 'rb'))['apply_umap']
-  run(**kwargs)
+  kwargs = json.load(open('args.json', 'rb'))
+  run(**kwargs['apply_umap'] | kwargs['global'])

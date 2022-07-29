@@ -45,5 +45,8 @@ def run(**kwargs):
   print('Pipeline completed in', f'{round(time.time() - t0, 2)}s')
 
 if __name__ == '__main__':
-  kwargs = json.load(open('args.json'))
+  try:
+    kwargs = json.load(open('args.local.json'))
+  except:
+    kwargs = json.load(open('args.json'))
   run(**kwargs)

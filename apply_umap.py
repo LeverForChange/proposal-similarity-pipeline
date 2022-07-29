@@ -3,12 +3,13 @@ import time
 import pickle
 import sys
 import json
+import os
 
 from sklearn.neighbors import KDTree
 
 def run(**kwargs):
   t0 = time.time()
-  path = f'data/{kwargs["model_tag"]}_'
+  path = os.path.join('data', f'{kwargs["model_tag"]}_')
   preprocess_df = pickle.load(open(path + 'preprocess_df.pkl', 'rb'))
 
   umap_mapper = umap.UMAP(
@@ -56,5 +57,8 @@ def run(**kwargs):
   pickle.dump(knn_indices, open(path + 'knn_indices.pkl', 'wb'))
 
 if __name__ == '__main__':
-  kwargs = json.load(open('args.json', 'rb'))
+  try:
+    kwargs = json.load(open('args.local.json'))
+  except:
+    kwargs = json.load(open('args.json'))
   run(**kwargs['apply_umap'] | kwargs['global'])

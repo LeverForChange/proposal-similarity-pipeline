@@ -1,6 +1,7 @@
 import pandas as pd
 import pickle
 import json
+import os
 
 from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -8,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 def run(**kwargs):
 
   # Train/Test Split
-  path = f'data/{kwargs["model_tag"]}_'
+  path = os.path.join('data', f'{kwargs["model_tag"]}_')
   train = pd.read_csv(path + kwargs['output_file_name'])
   
   # Declare TF-IDF vectorizer
@@ -32,5 +33,8 @@ def run(**kwargs):
   pickle.dump(preprocess_df, open(path + 'preprocess_df.pkl', 'wb'))
 
 if __name__ == '__main__':
-  kwargs = json.load(open('args.json'))
+  try:
+    kwargs = json.load(open('args.local.json'))
+  except:
+    kwargs = json.load(open('args.json'))
   run(**kwargs['preprocessor'] | kwargs['global'])

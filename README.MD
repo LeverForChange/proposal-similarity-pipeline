@@ -7,7 +7,7 @@ For use with non-LfC data, implement your own cleaning function.
 ## General Instructions
 
 1. `pip install -r requirements.txt` In case problems arise, consult: https://stackoverflow.com/questions/64261546/how-to-solve-error-microsoft-visual-c-14-0-or-greater-is-required-when-inst
-2. `args.json` contains keyword arguments for each step in the pipeline. Stages can be added or dropped by setting the `run` boolean for each stage. For example, if a cleaned and preprocessed dataset already exists, you may want to set all  `run` flags to `false` except for `apply_umap` and `topic_model`.
+2. `args.json` contains keyword arguments for each step in the pipeline. Stages can be added or dropped by setting the `run` boolean for each stage. For example, if a cleaned and preprocessed dataset already exists, you may want to set all  `run` flags to `false` except for `apply_umap` and `topic_model`. I would recommend copying this file and naming it `args.local.json`, which will be ignored by git. This way, the original config can be preserved.
 3. `python pipeline.py` - output files will be placed under `data/`.
 4. To upload the output files to S3 - a requirement for the hosted webapp to run with updated data, don't forget to cycle the container - ensure the `s3_uploader` run flag is set to `true`. You'll need to run `aws configure` in your terminal first to set up the AWS environment locally. Ensure the `AWS_ACCESS_KEY` and `AWS_ACCESS_SECRET` are up to date in the container's environment variables.
 
@@ -29,6 +29,8 @@ Required fields for downloaded Torque file, if using the pipeline to regenerate 
 
 "Executive Summary"
 ```
+
+It is also recommended to exclude `100Change2017` from the downloaded proposals.
 
 ### Global Parameters
 

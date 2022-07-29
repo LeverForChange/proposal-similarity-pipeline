@@ -4,6 +4,7 @@ import ast
 import html
 import re
 import time
+import os
 from textblob import Word
 from nltk.corpus import stopwords
 
@@ -11,16 +12,16 @@ def run(**kwargs):
   t0 = time.time()
 
   # Load data
-  path = 'data/'
-  df = pd.read_csv(path + kwargs['input_file_name'])
+  path = 'data'
+  df = pd.read_csv(os.path.join(path, kwargs['input_file_name']))
   document_col = kwargs['document_col'] # Used for UMAP dimension reduction
   if not isinstance(document_col, list):
     document_col = [document_col]
 
   # Create unified unique ID col
-  df['Competition Domain'] = df['Competition Domain'].fillna('MISSINGCOMP')
+  df['Competition Name'] = df['Competition Name'].fillna('MISSINGCOMP')
   df['ID'] = df.apply(
-    lambda x: f"{x['Competition Domain']}-{x['Application #']}",
+    lambda x: f"{x['Competition Name']}-{x['Application #']}",
     axis=1
     )
   df.drop_duplicates(subset=['ID'], inplace=True)
@@ -142,10 +143,16 @@ def run(**kwargs):
 
   df.drop(columns=document_col, inplace=True)
 
-  df.to_csv(path + kwargs['model_tag'] + '_' + kwargs['output_file_name'], index=False)
+  df.to_csv(
+    os.path.join(path, f"{kwargs['model_tag']}_{kwargs['output_file_name']}"),
+    index=False
+    )
   print('Cleaned data in', f'{round(time.time() - t0, 2)}s')
   print('Remaining proposals after cleaning:', len(df))
 
 if __name__ == '__main__':
-  kwargs = json.load(open('args.json'))
+  try:
+    kwargs = json.load(open('args.local.json'))
+  except:
+    kwargs = json.load(open('args.json'))
   run(**kwargs['cleaner'] | kwargs['global'])

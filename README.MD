@@ -7,9 +7,10 @@ For use with non-LfC data, implement your own cleaning function.
 ## General Instructions
 
 1. `pip install -r requirements.txt` In case problems arise, consult: https://stackoverflow.com/questions/64261546/how-to-solve-error-microsoft-visual-c-14-0-or-greater-is-required-when-inst
-2. `args.json` contains keyword arguments for each step in the pipeline. Stages can be added or dropped by setting the `run` boolean for each stage. For example, if a cleaned and preprocessed dataset already exists, you may want to set all  `run` flags to `false` except for `apply_umap` and `topic_model`. I would recommend copying this file and naming it `args.local.json`, which will be ignored by git. This way, the original config can be preserved.
-3. `python pipeline.py` - output files will be placed under `data/`.
-4. To upload the output files to S3 - a requirement for the hosted webapp to run with updated data, don't forget to cycle the container - ensure the `s3_uploader` run flag is set to `true`. You'll need to run `aws configure` in your terminal first to set up the AWS environment locally. Ensure the `AWS_ACCESS_KEY` and `AWS_ACCESS_SECRET` are up to date in the container's environment variables.
+2. The NLP tasks require some external datasets to be downloaded on the local machine. Run the following command in your terminal: `python -m textblob.download_corpora`. Then, open a python instance and run: `import nltk`, then `nltk.download('stopwords')`. If you have problems, consult here: https://stackoverflow.com/questions/38916452/nltk-download-ssl-certificate-verify-failed
+3. `args.json` contains keyword arguments for each step in the pipeline. Stages can be added or dropped by setting the `run` boolean for each stage. For example, if a cleaned and preprocessed dataset already exists, you may want to set all  `run` flags to `false` except for `apply_umap` and `topic_model`. I would recommend copying this file and naming it `args.local.json`, which will be ignored by git. This way, the original config can be preserved.
+4. `python pipeline.py` - output files will be placed under `data/`.
+5. To upload the output files to S3 - a requirement for the hosted webapp to run with updated data, don't forget to cycle the container - ensure the `s3_uploader` run flag is set to `true`. You'll need to run `aws configure` in your terminal first to set up the AWS environment locally. Ensure the `AWS_ACCESS_KEY` and `AWS_ACCESS_SECRET` are up to date in the container's environment variables.
 
 A small function to convert the KNN indices matrix to a CSV can be found in `knnToCsv.py`. This is useful for recalculating similar proposals for ingestion into Global View.
 
